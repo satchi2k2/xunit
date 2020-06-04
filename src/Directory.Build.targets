@@ -12,15 +12,15 @@
   <!-- Supplement NBGV versions with height -->
   <Target Name="UpdateAssemblyVersionInfo" BeforeTargets="GenerateAssemblyVersionInfo" DependsOnTargets="GetBuildVersion">
     <PropertyGroup>
-      <AssemblyInformationalVersion Condition=" '$(PrereleaseVersion)' == '' ">$(BuildVersionSimple)</AssemblyInformationalVersion>
-      <AssemblyInformationalVersion Condition=" '$(PrereleaseVersion)' != '' ">$(BuildVersionSimple)$(PrereleaseVersion).$(GitVersionHeight)+$(GitCommitIdShort)</AssemblyInformationalVersion>
+      <AssemblyInformationalVersion Condition=" '$(PrereleaseVersion)' == '' OR '$(PublicRelease)' == 'true' ">$(BuildVersionSimple)</AssemblyInformationalVersion>
+      <AssemblyInformationalVersion Condition=" '$(PrereleaseVersion)' != '' AND '$(PublicRelease)' != 'true' ">$(BuildVersionSimple)$(PrereleaseVersion)+$(GitCommitIdShort)</AssemblyInformationalVersion>
     </PropertyGroup>
   </Target>
 
   <Target Name="UpdateNuSpecProperties" BeforeTargets="GenerateNuspec" DependsOnTargets="GetBuildVersion">
     <PropertyGroup>
-      <PackageVersion Condition=" '$(PrereleaseVersion)' == '' ">$(BuildVersionSimple)</PackageVersion>
-      <PackageVersion Condition=" '$(PrereleaseVersion)' != '' ">$(BuildVersionSimple)$(PrereleaseVersion).$(GitVersionHeight)+$(GitCommitIdShort)</PackageVersion>
+      <PackageVersion Condition=" '$(PrereleaseVersion)' == '' OR '$(PublicRelease)' == 'true' ">$(BuildVersionSimple)</PackageVersion>
+      <PackageVersion Condition=" '$(PrereleaseVersion)' != '' AND '$(PublicRelease)' != 'true' ">$(BuildVersionSimple)$(PrereleaseVersion).$(GitVersionHeight)+$(GitCommitIdShort)</PackageVersion>
       <NuspecProperties>PackageVersion=$(PackageVersion);GitCommitId=$(GitCommitId)</NuspecProperties>
     </PropertyGroup>
   </Target>
